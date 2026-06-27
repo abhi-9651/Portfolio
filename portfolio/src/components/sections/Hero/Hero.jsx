@@ -207,7 +207,7 @@ function HeroPortrait({ portraitRef, portraitWrapperRef, hudRefs, coreRefs }) {
         {/* ── AI CONTAINMENT CHAMBER (Hero Card) ── */}
         <div
           ref={portraitRef}
-          className="relative w-[80%] h-[75%] translate-z-[0px] flex items-center justify-center"
+          className="relative w-[65%] h-[70%] translate-z-[0px] flex items-center justify-center"
         >
           {/* Glass Card Background - Separated so image can extend beyond borders */}
           <div className="absolute inset-0 rounded-[40px] border border-primary/30 bg-[#020617]/40 backdrop-blur-xl shadow-[inset_0_0_40px_rgba(0,229,255,0.1),0_0_40px_rgba(0,229,255,0.15)] overflow-hidden">
@@ -223,31 +223,31 @@ function HeroPortrait({ portraitRef, portraitWrapperRef, hudRefs, coreRefs }) {
           <img
             src="/assets/images/portrait.png"
             alt="Abhijeet Kushwaha"
-            className="relative w-[125%] h-[115%] max-w-none object-contain drop-shadow-[0_-10px_30px_rgba(0,229,255,0.2)] pointer-events-none z-10 -mt-8"
+            className="relative w-[110%] h-[110%] max-w-none object-contain drop-shadow-[0_-10px_30px_rgba(0,229,255,0.2)] pointer-events-none z-10 -mt-4"
             style={{ 
-              objectPosition: '50% 25%', 
+              objectPosition: '50% 50%', 
               filter: 'contrast(1.05) brightness(1.1) saturate(1.1)' 
             }}
           />
         </div>
 
         {/* ── FLOATING HUD PANELS (Around Portrait, translating in Z) ── */}
-        <div ref={registerHud(0)} className="absolute top-[15%] right-[-5%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[80px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_10s_ease-in-out_infinite]">
+        <div ref={registerHud(0)} className="absolute top-[15%] right-[2%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[80px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_10s_ease-in-out_infinite]">
           <FiCheckCircle className="text-success text-sm" />
           <span className="font-mono text-[10px] text-text-primary uppercase tracking-widest">Identity Verified</span>
         </div>
 
-        <div ref={registerHud(1)} className="absolute top-[40%] left-[-10%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[120px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_12s_ease-in-out_infinite_reverse]">
+        <div ref={registerHud(1)} className="absolute top-[40%] left-[-2%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[120px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_12s_ease-in-out_infinite_reverse]">
           <FiActivity className="text-primary text-sm" />
           <span className="font-mono text-[10px] text-text-primary uppercase tracking-widest">Frontend Systems Online</span>
         </div>
 
-        <div ref={registerHud(2)} className="absolute bottom-[25%] right-[-10%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[60px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_8s_ease-in-out_infinite]">
+        <div ref={registerHud(2)} className="absolute bottom-[25%] right-[-2%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[60px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_8s_ease-in-out_infinite]">
           <FiDatabase className="text-secondary text-sm" />
           <span className="font-mono text-[10px] text-text-primary uppercase tracking-widest">MMMUT Database Linked</span>
         </div>
 
-        <div ref={registerHud(3)} className="absolute bottom-[10%] left-[0%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[100px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_11s_ease-in-out_infinite]">
+        <div ref={registerHud(3)} className="absolute bottom-[10%] left-[8%] px-4 py-2 bg-surface/40 backdrop-blur-md border border-border-primary/50 rounded-lg translate-z-[100px] shadow-[0_0_20px_rgba(0,229,255,0.15)] flex items-center gap-2 animate-[float_11s_ease-in-out_infinite]">
           <FiShield className="text-warning text-sm" />
           <span className="font-mono text-[10px] text-text-primary uppercase tracking-widest">Mission Ready</span>
         </div>

@@ -417,7 +417,6 @@ export default function Navbar() {
           >
             <a
               href={SITE_CONFIG.resume}
-              download="Abhijeet_Kushwaha_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className={[
@@ -425,7 +424,7 @@ export default function Navbar() {
                 'hover:-translate-y-0.5 hover:bg-primary/10 hover:shadow-glow-primary',
                 'transition-all duration-200',
               ].join(' ')}
-              aria-label="Download resume"
+              aria-label="View resume"
             >
               Resume
             </a>
