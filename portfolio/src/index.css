@@ -1,0 +1,176 @@
+/* ================================================================
+   Project NOVA — Main CSS Entry Point
+   Tailwind CSS v4: CSS-first configuration via @theme directive.
+
+   Load Order (important):
+     1. @import "tailwindcss"   — Tailwind base, components, utilities
+     2. @theme { }              — Override / extend design tokens
+     3. Local stylesheet imports — globals → animations → utilities
+   ================================================================ */
+
+@import "tailwindcss";
+
+/* ================================================================
+   TAILWIND THEME TOKENS
+   All variables defined here are:
+     (a) Consumed by Tailwind to generate utility classes
+     (b) Exposed as CSS custom properties on :root automatically
+   This makes them the single source of truth for both Tailwind
+   and raw CSS / JS access via var(--...).
+   ================================================================ */
+@theme {
+
+  /* ── FONTS ───────────────────────────────────────────────────
+     Display font : Space Grotesk  → Hero, section titles
+     Body font    : Inter          → Paragraphs, cards, buttons
+  ──────────────────────────────────────────────────────────── */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* ── BACKGROUND / SURFACE COLORS ─────────────────────────────
+     Token              Value       Tailwind utility
+     color.background   #020617    bg-background
+     color.surface      #0F172A    bg-surface
+     color.surface-alt  #1E293B    bg-surface-alt
+  ──────────────────────────────────────────────────────────── */
+  --color-background:  #020617;
+  --color-surface:     #0F172A;
+  --color-surface-alt: #1E293B;
+
+  /* ── BRAND ACCENT COLORS ──────────────────────────────────────
+     Token             Value       Tailwind utility
+     color.primary     #00E5FF    text-primary / bg-primary
+     color.secondary   #7C3AED    text-secondary / bg-secondary
+     color.success     #14F195    text-success / bg-success
+     color.warning     #FACC15    text-warning / bg-warning
+     color.error       #EF4444    text-error / bg-error
+  ──────────────────────────────────────────────────────────── */
+  --color-primary:   #00E5FF;
+  --color-secondary: #7C3AED;
+  --color-success:   #14F195;
+  --color-warning:   #FACC15;
+  --color-error:     #EF4444;
+
+  /* ── TEXT SCALE ───────────────────────────────────────────────
+     Prefixed with "text-" to preserve semantic grouping.
+     Utility classes: text-text-primary, text-text-secondary etc.
+     For cleaner usage, aliases are defined in utilities.css.
+  ──────────────────────────────────────────────────────────── */
+  --color-text-primary:   #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary:  #94A3B8;
+  --color-text-disabled:  #64748B;
+
+  /* ── BORDER COLORS ────────────────────────────────────────────
+     Used via CSS variables; not used as Tailwind utilities directly
+     because rgba values work better as custom properties.
+  ──────────────────────────────────────────────────────────── */
+  --color-border-primary:   rgba(255, 255, 255, 0.08);
+  --color-border-secondary: rgba(255, 255, 255, 0.05);
+  --color-border-active:    #00E5FF;
+
+  /* ── BORDER RADIUS ────────────────────────────────────────────
+     8-point aligned radii. Override Tailwind defaults to match DS.
+     Token       Value     Tailwind utility
+     radius.sm   8px      rounded-sm
+     radius.md   16px     rounded-md
+     radius.lg   24px     rounded-lg
+     radius.xl   32px     rounded-xl
+     radius.full 9999px   rounded-full
+  ──────────────────────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-xl:   32px;
+  --radius-full: 9999px;
+
+  /* ── SHADOWS / ELEVATION ──────────────────────────────────────
+     Elevation levels for Tailwind shadow-elevation-* utilities.
+     Glow shadows are defined in globals.css :root (not Tailwind).
+  ──────────────────────────────────────────────────────────── */
+  --shadow-elevation-1:    0 4px  20px rgba(0, 0, 0, 0.15);
+  --shadow-elevation-2:    0 10px 40px rgba(0, 0, 0, 0.25);
+  --shadow-elevation-3:    0 20px 60px rgba(0, 0, 0, 0.35);
+  --shadow-glow-primary:   0 0   20px rgba(0, 229, 255, 0.35);
+  --shadow-glow-secondary: 0 0   24px rgba(124, 58, 237, 0.30);
+
+  /* ── ANIMATION DURATIONS ──────────────────────────────────────
+     Used by Framer Motion transition.duration and Tailwind
+     duration-* utilities (via transition-duration: var(...)).
+     --duration-hero is in globals.css :root (not a Tailwind utility).
+  ──────────────────────────────────────────────────────────── */
+  --duration-fast:   200ms;
+  --duration-normal: 400ms;
+  --duration-slow:   800ms;
+
+  /* ── BREAKPOINTS ──────────────────────────────────────────────
+     Matches Design System responsive targets:
+       Mobile  360+  → sm
+       Tablet  768+  → md
+       Laptop  1024+ → lg
+       Desktop 1280+ → xl
+       Wide    1440+ → 2xl
+  ──────────────────────────────────────────────────────────── */
+  --breakpoint-sm:  22.5rem;  /* 360px  */
+  --breakpoint-md:  48rem;    /* 768px  */
+  --breakpoint-lg:  64rem;    /* 1024px */
+  --breakpoint-xl:  80rem;    /* 1280px */
+  --breakpoint-2xl: 90rem;    /* 1440px */
+
+  /* ── 9-LAYER HERO ANIMATIONS ────────────────────────────────── */
+  --animate-pulse-slow: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-spin-slow: spin-centered 20s linear infinite;
+  --animate-spin-slow-reverse: spin-centered-reverse 25s linear infinite;
+  --animate-float-slow: float-z 6s ease-in-out infinite;
+  --animate-float-medium: float-z 4s ease-in-out infinite;
+  --animate-float-portrait: float-large 8s ease-in-out infinite;
+  --animate-float-particles: float-up 60s linear infinite;
+  --animate-scanner-sweep: scanner-sweep 8s ease-in-out infinite;
+  --animate-light-sweep: light-sweep 3s ease-out infinite;
+  --animate-scroll-pill: scroll-pill 1.5s ease-in-out infinite;
+
+  @keyframes spin-centered {
+    from { transform: translate(-50%, -50%) translateZ(var(--tw-translate-z, 0)) rotate(0deg); }
+    to { transform: translate(-50%, -50%) translateZ(var(--tw-translate-z, 0)) rotate(360deg); }
+  }
+  @keyframes spin-centered-reverse {
+    from { transform: translate(-50%, -50%) translateZ(var(--tw-translate-z, 0)) rotate(0deg); }
+    to { transform: translate(-50%, -50%) translateZ(var(--tw-translate-z, 0)) rotate(-360deg); }
+  }
+  @keyframes float-z {
+    0%, 100% { transform: translateY(0) translateZ(var(--tw-translate-z, 0)); }
+    50% { transform: translateY(-10px) translateZ(var(--tw-translate-z, 0)); }
+  }
+  @keyframes float-large {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes float-up {
+    from { background-position: 0 0; }
+    to { background-position: 0 -200%; }
+  }
+  @keyframes scanner-sweep {
+    0% { transform: translateY(-200%); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(200%); opacity: 0; }
+  }
+  @keyframes light-sweep {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
+  }
+  @keyframes scroll-pill {
+    0% { transform: translateY(-150%); opacity: 0; }
+    30% { opacity: 1; }
+    70% { transform: translateY(150%); opacity: 0; }
+    100% { transform: translateY(150%); opacity: 0; }
+  }
+}
+
+/* ================================================================
+   LOCAL STYLESHEET IMPORTS
+   Processed after @theme so all CSS variables are available.
+   ================================================================ */
+@import "../styles/globals.css";
+@import "../styles/animations.css";
+@import "../styles/utilities.css";

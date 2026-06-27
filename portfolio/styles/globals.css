@@ -1,0 +1,276 @@
+/* ================================================================
+   globals.css — Project NOVA
+   Base reset, global element styles, and derived design tokens.
+
+   This file handles:
+     - CSS reset / normalize
+     - :root tokens NOT covered by @theme (glow, glass, z-index)
+     - Global element defaults (body, headings, links, images)
+     - Custom scrollbar
+     - Selection styles
+     - Accessibility (focus-visible, reduced-motion)
+   ================================================================ */
+
+
+/* ── DERIVED DESIGN TOKENS ────────────────────────────────────────
+   These extend the @theme tokens defined in index.css.
+   Used via var() in component CSS and utility classes.
+   They are NOT Tailwind utilities — they are raw CSS variables.
+──────────────────────────────────────────────────────────────── */
+:root {
+  /* Video Overlay (Hero section background dim) */
+  --overlay-hero: rgba(2, 6, 23, 0.65);
+
+  /* Glow System
+     Applied only to: buttons, active cards, nav indicator, scroll indicator.
+     Never apply glow to body text. */
+  --glow-primary:   0 0 20px rgba(0, 229, 255, 0.1);
+  --glow-secondary: 0 0 20px rgba(124, 58, 237, 0.1);
+  --glow-primary-lg: 0 0 40px rgba(0, 229, 255, 0.15);
+
+  /* Glass System
+     Card   : 3% opacity,  24px blur
+     Nav    : 5% opacity,  32px blur */
+  --glass-card-bg:    rgba(2, 6, 23, 0.03);
+  --glass-nav-bg:     rgba(2, 6, 23, 0.05);
+  --glass-card-blur:  24px;
+  --glass-nav-blur:   32px;
+
+  /* Section Spacing (8-point aligned)
+     Desktop : 96px | Tablet : 72px | Mobile : 48px */
+  --section-padding-desktop: 96px;
+  --section-padding-tablet:  72px;
+  --section-padding-mobile:  48px;
+
+  /* Content Widths */
+  --width-content: 1280px;
+  --width-reading: 760px;
+
+  /* Z-Index Scale — predictable stacking context */
+  --z-below:   -1;
+  --z-base:     0;
+  --z-above:    10;
+  --z-nav:      100;
+  --z-overlay:  200;
+  --z-modal:    300;
+  --z-loader:   400;
+  --z-toast:    500;
+
+  /* Hero-specific duration (not a Tailwind utility) */
+  --duration-hero: 1200ms;
+
+  /* Transition Easings (as CSS timing functions)
+     Namespaced --ease-nova-* to avoid collision with Tailwind v4's
+     built-in --ease-out. Mirrors GSAP easing names for reference:
+       --ease-nova-out     → power2.out
+       --ease-nova-expo    → expo.out
+       --ease-nova-in-out  → power2.inOut */
+  --ease-nova-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-nova-expo:   cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-nova-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+
+/* ── CSS RESET ────────────────────────────────────────────────
+   Tailwind v4's preflight handles box-sizing, margin, and padding
+   on *, *::before, *::after. Only project-specific overrides below.
+──────────────────────────────────────────────────────────── */
+
+/* Remove list styles on ul/ol inside role="list" (not all lists) */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Prevent text overflow */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+
+/* ── HTML & BODY ──────────────────────────────────────────────────
+   Font smoothing and scroll are set at the html level.
+   Background, color, font at body level.
+──────────────────────────────────────────────────────────────── */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  /* Lenis will override scroll-behavior; this is the CSS fallback */
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;        /* 16px */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  /* Prevent horizontal overflow — DS requirement */
+  overflow-x: hidden;
+
+  /* Ensure full viewport height */
+  min-height: 100vh;
+}
+
+
+/* ── HEADINGS ─────────────────────────────────────────────────────
+   Display font (Space Grotesk) for all headings.
+   Line heights per Design System typography scale.
+──────────────────────────────────────────────────────────────── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+/* DS: Display text has a tighter line-height of 1.1 */
+h1 {
+  line-height: 1.1;
+}
+
+
+/* ── LINKS ────────────────────────────────────────────────────────
+   Inherit color by default — button/link styles override per context.
+──────────────────────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: var(--color-primary);
+  transition: color var(--duration-fast) var(--ease-nova-out);
+}
+
+
+/* ── IMAGES & MEDIA ───────────────────────────────────────────────
+   Prevent overflow; block display removes inline gap.
+──────────────────────────────────────────────────────────────── */
+img,
+video,
+picture,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Videos: full coverage, no controls visible */
+video {
+  object-fit: cover;
+}
+
+
+/* ── BUTTONS ──────────────────────────────────────────────────────
+   Reset native button styles — component styles applied via classes.
+──────────────────────────────────────────────────────────────── */
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+
+/* ── INPUTS & FORM ELEMENTS ───────────────────────────────────────
+   Normalize across browsers.
+──────────────────────────────────────────────────────────────── */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+
+/* ── TEXT SELECTION ───────────────────────────────────────────────
+   Cyan tint — consistent with primary accent.
+──────────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(0, 229, 255, 0.20);
+  color: var(--color-text-primary);
+}
+
+
+/* ── CUSTOM SCROLLBAR ─────────────────────────────────────────────
+   Thin, on-brand scrollbar. Webkit only (Firefox uses scrollbar-color).
+──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.25);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-fast) var(--ease-nova-out);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.55);
+}
+
+/* Firefox — scrollbar-width/color are inherited, so html is sufficient */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 229, 255, 0.25) var(--color-background);
+}
+
+
+/* ── FOCUS VISIBLE (Accessibility) ───────────────────────────────
+   Visible focus ring for keyboard navigation.
+   Visible only on keyboard focus — not mouse click.
+──────────────────────────────────────────────────────────────── */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* ── REDUCED MOTION ───────────────────────────────────────────────
+   Respect OS-level preference. DS requirement §27.
+   GSAP and Framer Motion should also check this at runtime.
+──────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
+    scroll-behavior:           auto   !important;
+  }
+}

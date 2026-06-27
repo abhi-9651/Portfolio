@@ -1,0 +1,227 @@
+/* ================================================================
+   animations.css — Project NOVA
+   Keyframe animation library.
+
+   Design System Motion Principles:
+     - Heavy, smooth, cinematic, purposeful
+     - Never: bounce, flash, excessive rotation, fast zoom
+     - Standard timings: text 0.6s | cards 0.8s | sections 1.0s | hero 1.2s
+     - Easings: power2.out / power3.out / expo.out (mirrored from GSAP)
+
+   These @keyframes are referenced by:
+     (a) Tailwind animation utilities (via @theme)
+     (b) Custom utility classes (animations.css utilities)
+     (c) Framer Motion custom keyframes
+     (d) GSAP (for complex timelines, GSAP manages its own)
+   ================================================================ */
+
+
+/* ── FADE IN ──────────────────────────────────────────────────────
+   Simple opacity reveal.
+   Usage: animate-fade-in
+──────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* ── FADE IN UP ───────────────────────────────────────────────────
+   Standard scroll reveal — content rises from below.
+   Used on: section titles, cards, paragraphs.
+──────────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ── FADE IN DOWN ─────────────────────────────────────────────────
+   Content descends into view.
+   Used on: navbar on load.
+──────────────────────────────────────────────────────────────── */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ── FADE OUT UP ──────────────────────────────────────────────────
+   Used for Hero exit animation when scrolling.
+   Heading moves upward as user scrolls away.
+──────────────────────────────────────────────────────────────── */
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-32px);
+  }
+}
+
+
+/* ── GLOW PULSE ───────────────────────────────────────────────────
+   Subtle breathing glow for primary CTA elements.
+   Applied to: primary buttons, scroll indicator, active nav item.
+   Never apply to body text.
+──────────────────────────────────────────────────────────────── */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: var(--glow-primary);
+  }
+  50% {
+    box-shadow: 0 0 36px rgba(0, 229, 255, 0.65);
+  }
+}
+
+
+/* ── SECONDARY GLOW PULSE ─────────────────────────────────────────
+   Violet variant for secondary accent elements.
+──────────────────────────────────────────────────────────────── */
+@keyframes glowPulseSecondary {
+  0%, 100% {
+    box-shadow: var(--glow-secondary);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.55);
+  }
+}
+
+
+/* ── SCROLL INDICATOR BOUNCE ──────────────────────────────────────
+   Gentle downward cue in the Hero section.
+   Slow, calm — not a jumpy bounce.
+──────────────────────────────────────────────────────────────── */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+
+/* ── CURSOR BLINK ─────────────────────────────────────────────────
+   Typewriter cursor for AI initialization text.
+──────────────────────────────────────────────────────────────── */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+
+/* ── SHIMMER ──────────────────────────────────────────────────────
+   Skeleton loading state.
+   Applied to placeholder elements while content loads.
+──────────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+
+/* ── FLOAT ────────────────────────────────────────────────────────
+   Idle floating for decorative elements.
+   Slow and calm — 4 second cycle.
+──────────────────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+
+/* ── SCAN LINE ────────────────────────────────────────────────────
+   AI / HUD aesthetic scan line.
+   Used in Loader section for cinematic effect.
+──────────────────────────────────────────────────────────────── */
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 0.4; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+
+/* ── GRADIENT SHIFT ───────────────────────────────────────────────
+   Animated gradient for decorative text or borders.
+   Slow 6-second cycle — never distracting.
+──────────────────────────────────────────────────────────────── */
+@keyframes gradientShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+
+/* ── BORDER GLOW TRACE ────────────────────────────────────────────
+   Animated border highlight on hover.
+   Used on: active skill cards, selected project cards.
+──────────────────────────────────────────────────────────────── */
+@keyframes borderGlowTrace {
+  0%   { border-color: rgba(0, 229, 255, 0);   }
+  50%  { border-color: rgba(0, 229, 255, 0.75); }
+  100% { border-color: rgba(0, 229, 255, 0);   }
+}
+
+
+/* ── TIMELINE DRAW ────────────────────────────────────────────────
+   The vertical line in Achievements section draws itself.
+   The scaleY goes from 0 → 1, origin at top.
+──────────────────────────────────────────────────────────────── */
+@keyframes timelineDraw {
+  from {
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: top center;
+  }
+}
+
+
+/* ── LOADER REVEAL ────────────────────────────────────────────────
+   Full-screen loader panel slides out vertically.
+   Used when ACCESS GRANTED sequence completes.
+──────────────────────────────────────────────────────────────── */
+@keyframes loaderExit {
+  0%   { transform: translateY(0);     opacity: 1; }
+  80%  { transform: translateY(-95%);  opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+
+/* ── REVEAL CLIP ──────────────────────────────────────────────────
+   Text reveal via clip-path — cinematic word reveal effect.
+   Used in Hero heading reveal.
+──────────────────────────────────────────────────────────────── */
+@keyframes revealClip {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0);   }
+}
+
+
+/* ── SCALE IN ─────────────────────────────────────────────────────
+   Subtle scale-up reveal for cards.
+──────────────────────────────────────────────────────────────── */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

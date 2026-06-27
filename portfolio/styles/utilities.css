@@ -1,0 +1,405 @@
+/* ================================================================
+   utilities.css — Project NOVA
+   Custom utility classes via Tailwind v4 @utility directive.
+
+   @utility creates atomic utilities that:
+     - Work with Tailwind's modifier system (hover:, md:, focus:, etc.)
+     - Are generated into the utilities layer (same cascade as Tailwind)
+     - Can be combined with any Tailwind class without conflict
+
+   NOTE (Tailwind v4): @utility names must be alphanumeric + hyphens only.
+   Pseudo-classes (:hover) go inside the block as nested CSS with &.
+   Pseudo-elements (::before) with position-dependent CSS go in @layer utilities.
+
+   Organization:
+     1.  Container & Layout
+     2.  Glass Effects
+     3.  Glow Effects
+     4.  Text Utilities
+     5.  Button Base Styles
+     6.  Card Base Styles
+     7.  Section Utilities
+     8.  Animation Utilities
+     9.  Border Utilities
+     10. Accessibility Utilities
+     11. Pseudo-element Helpers (via @layer utilities)
+   ================================================================ */
+
+
+/* ── 1. CONTAINER & LAYOUT ────────────────────────────────────────
+   Main content container.
+   Max-width: 1280px | Centered | 24px horizontal padding.
+──────────────────────────────────────────────────────────────── */
+@utility container-nova {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* Narrow reading-width container (760px) for text-heavy sections */
+@utility container-reading {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* Full-screen section */
+@utility section-full {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+
+/* ── 2. GLASS EFFECTS ─────────────────────────────────────────────
+   DS §14: Glass enhances readability, never reduces contrast.
+   Two variants: card (lighter) and nav (slightly darker).
+──────────────────────────────────────────────────────────────── */
+
+/* Glass Card — 3% opacity, 24px blur */
+@utility glass-card {
+  background:               var(--glass-card-bg);
+  backdrop-filter:          blur(var(--glass-card-blur));
+  -webkit-backdrop-filter:  blur(var(--glass-card-blur));
+  border:                   1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:               inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Glass Nav — 5% opacity, 32px blur */
+@utility glass-nav {
+  background:               var(--glass-nav-bg);
+  backdrop-filter:          blur(var(--glass-nav-blur));
+  -webkit-backdrop-filter:  blur(var(--glass-nav-blur));
+  border:                   1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:               inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Glass Surface — slightly more opaque for elevated surfaces */
+@utility glass-surface {
+  background:               rgba(30, 41, 59, 0.15);
+  backdrop-filter:          blur(20px);
+  -webkit-backdrop-filter:  blur(20px);
+  border:                   1px solid var(--color-border-primary);
+}
+
+
+/* ── 3. GLOW EFFECTS ──────────────────────────────────────────────
+   DS §15: Glow is used sparingly — highlights interaction, not decoration.
+   Applied only to: buttons, active cards, nav indicator, scroll indicator.
+──────────────────────────────────────────────────────────────── */
+
+/* Box glow — Primary (Cyan) */
+@utility glow-primary {
+  box-shadow: var(--glow-primary);
+}
+
+/* Box glow — Secondary (Violet) */
+@utility glow-secondary {
+  box-shadow: var(--glow-secondary);
+}
+
+/* Box glow — Large (for prominent CTAs) */
+@utility glow-primary-lg {
+  box-shadow: var(--glow-primary-lg);
+}
+
+/* Text glow — for hero heading or accent text */
+@utility glow-text {
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.55);
+}
+
+/* Animated glow pulse (uses keyframe from animations.css) */
+@utility glow-pulse {
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+
+/* ── 4. TEXT UTILITIES ────────────────────────────────────────────
+   Clean aliases for text color tokens — avoids "text-text-primary"
+   double-naming while keeping the design system's semantic meaning.
+──────────────────────────────────────────────────────────────── */
+
+/* Text color aliases (matches DS text.* scale) */
+@utility text-primary-content   { color: var(--color-text-primary);   }
+@utility text-secondary-content { color: var(--color-text-secondary);  }
+@utility text-tertiary-content  { color: var(--color-text-tertiary);   }
+@utility text-disabled-content  { color: var(--color-text-disabled);   }
+
+/* Gradient text — Primary (Cyan → Violet) */
+@utility gradient-text {
+  background:              linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip:         text;
+  -webkit-text-fill-color: transparent;
+  color:                   transparent;
+}
+
+/* Gradient text — Animated variant */
+@utility gradient-text-animated {
+  background: linear-gradient(
+    270deg,
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-primary)
+  );
+  background-size:         200% 200%;
+  -webkit-background-clip: text;
+  background-clip:         text;
+  -webkit-text-fill-color: transparent;
+  color:                   transparent;
+  animation:               gradientShift 4s ease-in-out infinite;
+}
+
+/* Line clamp utilities */
+@utility line-clamp-2 {
+  display:            -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow:           hidden;
+}
+
+@utility line-clamp-3 {
+  display:            -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow:           hidden;
+}
+
+@utility line-clamp-4 {
+  display:            -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow:           hidden;
+}
+
+
+/* ── 5. BUTTON BASE STYLES ────────────────────────────────────────
+   DS §18: Buttons are primary interaction elements.
+   Three variants: primary, secondary (outline), ghost.
+   Sizes: sm (40px), md (48px), lg (56px).
+──────────────────────────────────────────────────────────────── */
+
+/* Shared base (applied to all button variants) */
+@utility btn-base {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             8px;
+  font-family:     var(--font-body);
+  font-weight:     500;
+  letter-spacing:  0.025em;
+  border-radius:   var(--radius-full);
+  cursor:          pointer;
+  transition:
+    transform     var(--duration-fast) var(--ease-nova-out),
+    box-shadow    var(--duration-fast) var(--ease-nova-out),
+    background    var(--duration-fast) var(--ease-nova-out),
+    border-color  var(--duration-fast) var(--ease-nova-out);
+  user-select:     none;
+  white-space:     nowrap;
+  min-height:      44px; /* DS: minimum 44px touch target for accessibility */
+}
+
+/* Primary button — filled, cyan, glow on hover */
+@utility btn-primary {
+  background:     var(--color-primary);
+  color:          var(--color-background);
+  font-weight:    600;
+  box-shadow:     var(--glow-primary);
+  height:         48px;
+  padding-inline: 28px;
+}
+
+/* Secondary button — outline, transparent background */
+@utility btn-secondary {
+  background:     transparent;
+  color:          var(--color-primary);
+  border:         1px solid var(--color-primary);
+  height:         48px;
+  padding-inline: 28px;
+}
+
+/* Ghost button — text only */
+@utility btn-ghost {
+  background:     transparent;
+  color:          var(--color-text-secondary);
+  height:         48px;
+  padding-inline: 28px;
+}
+
+/* Icon button — circular, for social links, icon actions */
+@utility btn-icon {
+  width:           44px;
+  height:          44px;
+  border-radius:   var(--radius-full);
+  background:      transparent;
+  border:          1px solid var(--color-border-primary);
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  transition:
+    border-color var(--duration-fast) var(--ease-nova-out),
+    box-shadow   var(--duration-fast) var(--ease-nova-out),
+    transform    var(--duration-fast) var(--ease-nova-out);
+}
+
+/* Button size modifiers */
+@utility btn-sm { height: 40px; padding-inline: 20px; font-size: 0.875rem; }
+@utility btn-md { height: 48px; padding-inline: 28px; font-size: 1rem;     }
+@utility btn-lg { height: 56px; padding-inline: 36px; font-size: 1.0625rem; }
+
+
+/* ── 6. CARD BASE STYLES ──────────────────────────────────────────
+   DS §19: Cards organize information and create hierarchy.
+   Variants: glass-card (general), skill-card, project-card, mission-card.
+──────────────────────────────────────────────────────────────── */
+
+/* Shared card base */
+@utility card-base {
+  position:      relative;
+  border-radius: var(--radius-lg);
+  overflow:      hidden;
+  transition:
+    transform    var(--duration-normal) var(--ease-nova-out),
+    box-shadow   var(--duration-normal) var(--ease-nova-out),
+    border-color var(--duration-normal) var(--ease-nova-out);
+}
+
+/* Card hover lift — DS: translateY -2px, scale 1.02, never exceed 1.05 */
+@utility card-hover {
+  &:hover {
+    transform:  translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-elevation-2);
+  }
+}
+
+/* Shimmer placeholder for loading states */
+@utility card-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-alt) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation:       shimmer 1.5s ease-in-out infinite;
+}
+
+
+/* ── 7. SECTION UTILITIES ─────────────────────────────────────────
+   DS §9: Desktop 120px | Tablet 96px | Mobile 72px top/bottom padding.
+──────────────────────────────────────────────────────────────── */
+@utility section-padding {
+  padding-top:    var(--section-padding-desktop);
+  padding-bottom: var(--section-padding-desktop);
+
+  @media (max-width: 64rem) {
+    padding-top:    var(--section-padding-tablet);
+    padding-bottom: var(--section-padding-tablet);
+  }
+
+  @media (max-width: 48rem) {
+    padding-top:    var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+}
+
+/* Section wrapper */
+@utility section-wrapper {
+  width:    100%;
+  position: relative;
+}
+
+
+/* ── 8. ANIMATION UTILITIES ───────────────────────────────────────
+──────────────────────────────────────────────────────────────── */
+@utility animate-fade-in       { animation: fadeIn        var(--duration-normal)  var(--ease-nova-out) both; }
+@utility animate-fade-in-up    { animation: fadeInUp      var(--duration-slow)    var(--ease-nova-out) both; }
+@utility animate-fade-in-down  { animation: fadeInDown    var(--duration-slow)    var(--ease-nova-out) both; }
+@utility animate-float         { animation: float         4s ease-in-out infinite;                      }
+@utility animate-scan          { animation: scanLine      3s linear     infinite;                       }
+@utility animate-shimmer       { animation: shimmer       1.5s ease-in-out infinite;                    }
+@utility animate-cursor-blink  { animation: cursorBlink   1s step-end   infinite;                       }
+@utility animate-scroll-bounce { animation: scrollBounce  1.8s ease-in-out infinite;                    }
+
+
+/* ── 9. BORDER UTILITIES ──────────────────────────────────────────
+──────────────────────────────────────────────────────────────── */
+@utility border-glass        { border:       1px solid var(--color-border-primary);  }
+@utility border-glass-subtle { border:       1px solid var(--color-border-secondary); }
+@utility border-active       { border-color: var(--color-border-active); box-shadow: 0 0 12px rgba(0, 229, 255, 0.20); }
+
+
+/* ── 10. ACCESSIBILITY UTILITIES ──────────────────────────────────
+──────────────────────────────────────────────────────────────── */
+
+/* Visually hidden but accessible to screen readers */
+@utility sr-only-nova {
+  position:   absolute;
+  width:      1px;
+  height:     1px;
+  padding:    0;
+  margin:     -1px;
+  overflow:   hidden;
+  clip:       rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border:     0;
+}
+
+/* Skip to main content link */
+@utility skip-link {
+  position:      absolute;
+  top:           -100%;
+  left:          16px;
+  background:    var(--color-primary);
+  color:         var(--color-background);
+  padding:       8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight:   600;
+  z-index:       var(--z-toast);
+  transition:    top var(--duration-fast) var(--ease-nova-out);
+
+  &:focus {
+    top: 16px;
+  }
+}
+
+
+/* ── DIVIDERS ─────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────── */
+@utility divider {
+  width:  100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-border-primary) 50%, transparent 100%);
+}
+
+@utility divider-glow {
+  width:      100%;
+  height:     1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 229, 255, 0.40) 50%, transparent 100%);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.20);
+}
+
+
+/* ── 11. PSEUDO-ELEMENT HELPERS (via @layer utilities) ────────────
+   Tailwind v4's @utility cannot define pseudo-element selectors
+   that are class-name-level (e.g., .border-gradient::before).
+   These use @layer utilities which supports full CSS.
+──────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Gradient border via ::before overlay */
+  .border-gradient {
+    position: relative;
+  }
+
+  .border-gradient::before {
+    content:       '';
+    position:      absolute;
+    inset:         -1px;
+    border-radius: inherit;
+    background:    linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    z-index:       -1;
+  }
+}
