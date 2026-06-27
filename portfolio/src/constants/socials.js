@@ -34,7 +34,7 @@ export const SOCIAL_LINKS = [
   {
     id:        'linkedin',
     label:     'LinkedIn',
-    href:      'https://linkedin.com/in/abhijeet-kushwaha',
+    href:      'https://www.linkedin.com/in/abhijeet-kushwaha-876454330/',
     icon:      FiLinkedin,
     ariaLabel: 'Connect with Abhijeet on LinkedIn',
     external:  true,
